@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaveamento de Times com Placar</title>
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #3f51f7; /* Amarelo Queimado */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            overflow: auto;
+        }
+
+        .celular {
+            background-color: #f79c26; /* Amarelo Queimado */
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3); /* Sombra maior */
+            box-sizing: border-box;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            margin-top: 20px; /* Espaço nas bordas superiores */
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Arial', sans-serif;
+            color: white; /* Cor do título em branco */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .container {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            margin: 5px 0;
+            border: 1px solid #003366;
+            border-radius: 5px;
+            width: 80%; /* Caixa de input mais estreita */
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        input[type="color"] {
+            padding: 0;
+            border: none;
+            width: 30px; /* Largura menor */
+            height: 30px; /* Altura igual à largura para criar um quadrado */
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .button {
+            background-color: #003366; /* Preto */
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            margin: 15px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 80%; /* Botão centralizado */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button:hover {
+            background-color: #0055cc; /* Azul para o hover */
+        }
+
+        #chaveamento {
+            margin-top: 20px;
+            border-top: 2px solid #003366;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        .time {
+            display: inline-block;
+            width: 40%;
+            text-align: center;
+            padding: 10px;
+            margin: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #003366;
+        }
+
+        .jogo {
+            margin: 15px 0;
+        }
+
+        .jogo span {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .tabela {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .tabela th, .tabela td {
+            border: 1px solid #003366;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .tabela th {
+            background-color: #003366;
+            color: white;
+        }
+
+        .tabela tr:nth-child(even) {
+            background-color: #e6f2ff;
+        }
+
+        .tabela tr:hover {
+            background-color: #cccccc;
+        }
+
+        /* Classe para o time campeão */
+        .campeao {
+            background-color: gold;
+            color: black;
+        }
+
+        .campeao::after {
+            content: " 🏆";
+        }
+
+        /* Responsividade para telas pequenas */
+        @media (max-width: 768px) {
+            .time {
+                width: 45%;
+                font-size: 14px;
+            }
+
+            .container input[type="text"], .container input[type="color"] {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            .button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+        }
+
+        /* Para telas ainda menores, como em celulares verticais */
+        @media (max-width: 480px) {
+            .time {
+                width: 45%;
+                font-size: 14px;
+            }
+
+            .tabela th, .tabela td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .container input[type="text"], .container input[type="color"] {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            .button {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+
+        /* Para tablets */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .celular {
+                width: 80%;
+            }
+
+            .button {
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .time {
+                width: 30%;
+                font-size: 18px;
+            }
+
+            .tabela th, .tabela td {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="celular">
+        <h1>Gerador de Chaveamento de Times</h1>
+        
+        <div class="container">
+            <label for="time1">Nome do Time 1:</label>
+            <input type="text" id="time1" placeholder="Time 1">
+            <input type="color" id="corTime1">
+        </div>
+        <div class="container">
+            <label for="time2">Nome do Time 2:</label>
+            <input type="text" id="time2" placeholder="Time 2">
+            <input type="color" id="corTime2">
+        </div>
+        <div class="container">
+            <label for="time3">Nome do Time 3:</label>
+            <input type="text" id="time3" placeholder="Time 3">
+            <input type="color" id="corTime3">
+        </div>
+
+        <button class="button" onclick="gerarChaveamento()">Gerar Chaveamento</button>
+        
+        <div id="chaveamento"></div>
+
+        <button class="button" onclick="calcularResultados()">Calcular Resultados</button>
+
+        <h2>Classificação</h2>
+        <table id="tabelaClassificacao" class="tabela">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Jogos</th>
+                    <th>V</th>
+                    <th>E</th>
+                    <th>D</th>
+                    <th>GP</th>
+                    <th>GC</th>
+                    <th>SG</th>
+                    <th>PTS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Classificação será gerada aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let times = [];
+        let jogos = [];
+        let resultados = [];
+
+        function gerarChaveamento() {
+            const time1 = document.getElementById("time1").value;
+            const corTime1 = document.getElementById("corTime1").value;
+            const time2 = document.getElementById("time2").value;
+            const corTime2 = document.getElementById("corTime2").value;
+            const time3 = document.getElementById("time3").value;
+            const corTime3 = document.getElementById("corTime3").value;
+
+            if (!time1 || !time2 || !time3) {
+                alert("Por favor, insira os nomes de todos os times.");
+                return;
+            }
+
+            // Armazenando os times e suas cores
+            times = [
+                { nome: time1, cor: corTime1, jogos: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0, pontos: 0 },
+                { nome: time2, cor: corTime2, jogos: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0, pontos: 0 },
+                { nome: time3, cor: corTime3, jogos: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0, pontos: 0 }
+            ];
+
+            // Gerando os jogos ida e volta (6 jogos)
+            jogos = [
+                { timeA: time1, timeB: time2 },
+                { timeA: time1, timeB: time3 },
+                { timeA: time2, timeB: time1 },
+                { timeA: time2, timeB: time3 },
+                { timeA: time3, timeB: time1 },
+                { timeA: time3, timeB: time2 }
+            ];
+
+            const chaveamentoDiv = document.getElementById("chaveamento");
+            chaveamentoDiv.innerHTML = "<h2>Chaveamento:</h2>";
+
+            jogos.forEach((jogo, index) => {
+                chaveamentoDiv.innerHTML += `
+                    <div class="jogo">
+                        <div class="time" style="background-color: ${times.find(t => t.nome === jogo.timeA).cor};">${jogo.timeA}</div>
+                        <span> vs </span>
+                        <div class="time" style="background-color: ${times.find(t => t.nome === jogo.timeB).cor};">${jogo.timeB}</div>
+                    </div>
+                    <div class="jogo">
+                        <input type="number" id="placar-${index}-1" placeholder="0" min="0" />
+                        <span> x </span>
+                        <input type="number" id="placar-${index}-2" placeholder="0" min="0" />
+                    </div>
+                    <br>
+                `;
+            });
+        }
+
+        function calcularResultados() {
+            resultados = [];
+
+            jogos.forEach((jogo, index) => {
+                const placar1 = parseInt(document.getElementById(`placar-${index}-1`).value) || 0;
+                const placar2 = parseInt(document.getElementById(`placar-${index}-2`).value) || 0;
+
+                // Atualizando os times com base nos placares
+                const timeA = times.find(time => time.nome === jogo.timeA);
+                const timeB = times.find(time => time.nome === jogo.timeB);
+
+                timeA.jogos++;
+                timeB.jogos++;
+                timeA.gp += placar1;
+                timeB.gp += placar2;
+                timeA.gc += placar2;
+                timeB.gc += placar1;
+                timeA.sg = timeA.gp - timeA.gc;
+                timeB.sg = timeB.gp - timeB.gc;
+
+                if (placar1 > placar2) {
+                    timeA.v++;
+                    timeB.d++;
+                    timeA.pontos += 3;
+                } else if (placar1 < placar2) {
+                    timeB.v++;
+                    timeA.d++;
+                    timeB.pontos += 3;
+                } else {
+                    timeA.e++;
+                    timeB.e++;
+                    timeA.pontos += 1;
+                    timeB.pontos += 1;
+                }
+
+                resultados.push({ timeA, timeB });
+            });
+
+            // Exibindo a classificação
+            times.sort((a, b) => b.pontos - a.pontos || b.sg - a.sg);
+
+            const tabela = document.getElementById("tabelaClassificacao").getElementsByTagName('tbody')[0];
+            tabela.innerHTML = ''; // Limpar tabela antes de adicionar os dados
+
+            times.forEach(time => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="${time.pontos === Math.max(...times.map(t => t.pontos)) ? 'campeao' : ''}">${time.nome}</td>
+                    <td>${time.jogos}</td>
+                    <td>${time.v}</td>
+                    <td>${time.e}</td>
+                    <td>${time.d}</td>
+                    <td>${time.gp}</td>
+                    <td>${time.gc}</td>
+                    <td>${time.sg}</td>
+                    <td>${time.pontos}</td>
+                `;
+                tabela.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>
