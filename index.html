@@ -21,11 +21,11 @@
         }
 
         .celular {
-            background-color: #f79c26; /* Amarelo Queimado */
+            background-color: #ffc403; /* Amarelo Queimado */
             border-radius: 20px;
             width: 100%;
             max-width: 450px;
-            padding: 20px;
+            padding-top: 0px;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.3); /* Sombra maior */
             box-sizing: border-box;
             overflow-y: auto;
@@ -37,7 +37,10 @@
         h1 {
             font-family: 'Arial', sans-serif;
             color: white; /* Cor do título em branco */
-            margin-bottom: 20px;
+            margin-top: 0px;
+            background-color: #000000;
+            padding: 10px;
+            font-weight: bolder;
             font-size: 24px;
         }
 
@@ -149,6 +152,18 @@
         .campeao::after {
             content: " 🏆";
         }
+
+        footer{
+            color: rgb(255, 252, 252);
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bolder;
+            background-color: #000000;
+            padding: 10px;
+        
+        }
+
+        
 
         /* Responsividade para telas pequenas */
         @media (max-width: 768px) {
@@ -270,6 +285,8 @@
                 <!-- Classificação será gerada aqui -->
             </tbody>
         </table>
+        <footer>TáDificil Group</footer>
+        
     </div>
 
     <script>
@@ -301,10 +318,10 @@
             jogos = [
                 { timeA: time1, timeB: time2 },
                 { timeA: time1, timeB: time3 },
+                { timeA: time3, timeB: time2 },
                 { timeA: time2, timeB: time1 },
-                { timeA: time2, timeB: time3 },
                 { timeA: time3, timeB: time1 },
-                { timeA: time3, timeB: time2 }
+                { timeA: time2, timeB: time3 }
             ];
 
             const chaveamentoDiv = document.getElementById("chaveamento");
